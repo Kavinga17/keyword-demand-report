@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Medfuture AU — Keyword Demand Report</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f0;color:#1a1a1a;padding:1.5rem}
+.wrap{max-width:1200px;margin:0 auto}
+.top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.5rem;flex-wrap:wrap;gap:10px}
+.top-left h1{font-size:20px;font-weight:500;color:#1a1a1a}
+.top-left p{font-size:12px;color:#888;margin-top:4px}
+.top-right{display:flex;gap:8px;flex-wrap:wrap}
+.intent-btn{font-size:12px;padding:7px 18px;border-radius:8px;border:1px solid #ddd;background:#fff;color:#666;cursor:pointer;font-weight:500;transition:all 0.15s}
+.intent-btn:hover{border-color:#999}
+.intent-btn.all-active{background:#E6F1FB;color:#0C447C;border-color:#378ADD}
+.intent-btn.candidate-active{background:#E6F1FB;color:#0C447C;border-color:#378ADD}
+.intent-btn.client-active{background:#FAEEDA;color:#633806;border-color:#EF9F27}
+.intent-btn.patient-active{background:#F0FBF0;color:#1a5c1a;border-color:#4CAF50}
+.card{background:#fff;border:1px solid #e8e8e3;border-radius:12px;padding:1.5rem;margin-bottom:1rem}
+.filter-bar{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:1.2rem;padding-bottom:1.2rem;border-bottom:1px solid #f0f0eb}
+.fg{display:flex;flex-direction:column;gap:6px}
+.fg-label{font-size:11px;color:#888;font-weight:500;text-transform:uppercase;letter-spacing:0.5px}
+.fg-btns{display:flex;gap:4px;flex-wrap:wrap}
+.fb{font-size:11px;padding:4px 10px;border-radius:6px;border:1px solid #e0e0d8;background:#fff;color:#666;cursor:pointer;transition:all 0.15s}
+.fb:hover{border-color:#999;background:#f9f9f5}
+.fb.active{background:#E6F1FB;color:#0C447C;border-color:#378ADD}
+.search-row{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.search-row input{flex:1;font-size:13px;padding:8px 12px;border-radius:8px;border:1px solid #e0e0d8;background:#fafaf7;color:#1a1a1a;outline:none;transition:border 0.15s}
+.search-row input:focus{border-color:#378ADD}
+.legend{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.li{display:flex;align-items:center;gap:5px;font-size:11px;color:#888}
+.ld{width:10px;height:10px;border-radius:2px}
+.cnt{font-size:11px;color:#aaa;margin-bottom:8px}
+table{width:100%;font-size:12px;border-collapse:collapse}
+th{text-align:left;padding:9px 12px;color:#888;font-weight:500;border-bottom:1px solid #f0f0eb;white-space:nowrap;font-size:11px}
+td{padding:8px 12px;color:#1a1a1a;border-bottom:1px solid #f5f5f0;word-break:break-word}
+.grp td{font-weight:600;font-size:11px;color:#555;background:#f0f0eb;padding:7px 12px;letter-spacing:0.3px}
+tr.data:hover td{background:#fafaf7}
+.b{font-size:10px;padding:2px 8px;border-radius:6px;display:inline-block;white-space:nowrap;font-weight:500}
+.bc{background:#E6F1FB;color:#0C447C}
+.bk{background:#FAEEDA;color:#633806}
+.bp{background:#F0FBF0;color:#1a5c1a}
+.vol-bar{height:3px;border-radius:2px;margin-top:3px}
+.city-pill{display:inline-flex;align-items:center;gap:5px;padding:2px 8px;border-radius:6px;font-size:11px}
+.city-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.na-watermark{font-size:11px;color:#ccc;font-style:italic;letter-spacing:0.3px}
+.no-results{text-align:center;padding:2.5rem;color:#aaa;font-size:13px}
+.rank{font-size:11px;font-weight:600;color:#bbb;width:20px;text-align:center;display:inline-block}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="top-left">
+      <h1>Medfuture AU — keyword demand report</h1>
+      <p>April – June 2026 &nbsp;·&nbsp; Source: SEMrush &nbsp;·&nbsp; 99 keywords across 9 categories</p>
+    </div>
+    <div class="top-right">
+      <button class="intent-btn all-active" onclick="setIntent('all',this)">All</button>
+      <button class="intent-btn" onclick="setIntent('Candidate',this)">Candidate</button>
+      <button class="intent-btn" onclick="setIntent('Client',this)">Client</button>
+      
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="filter-bar">
+      <div class="fg">
+        <span class="fg-label">Category</span>
+        <div class="fg-btns" id="catBtns">
+          <button class="fb active" onclick="sf('cat','all',this)">All</button>
+        </div>
+      </div>
+      <div class="fg">
+        <span class="fg-label">Searching from</span>
+        <div class="fg-btns" id="fromBtns">
+          <button class="fb active" onclick="sf('from','all',this)">All</button>
+        </div>
+      </div>
+      <div class="fg">
+        <span class="fg-label">Target city</span>
+        <div class="fg-btns" id="targetBtns">
+          <button class="fb active" onclick="sf('target','all',this)">All</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="search-row">
+      <i class="ti ti-search"></i>
+      <input type="text" id="searchBox" placeholder="Search keywords..." oninput="render()">
+    </div>
+
+    <div class="legend" id="legend"></div>
+    <div class="cnt" id="cnt"></div>
+
+    <div style="overflow-x:auto">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:4%">#</th>
+            <th style="width:32%">Related query</th>
+            <th style="width:15%">Searching from</th>
+            <th style="width:14%">Target city</th>
+            <th style="width:10%">Intent</th>
+            <th style="width:14%">Volume</th>
+          </tr>
+        </thead>
+        <tbody id="tb"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+const cityColors={
+  'Sydney':'#9FE1CB','Melbourne':'#B5D4F4','Brisbane':'#FAC775',
+  'Perth':'#F5C4B3','Adelaide':'#CECBF6','Gold Coast':'#F4C0D1',
+  'Canberra':'#C0DD97','Newcastle':'#AFA9EC','Geelong':'#85B7EB','Hobart':'#F5D08B'
+};
+
+const allData=[{"Category": "Dentist", "Related Query": "dentist jobs sydney nsw", "Searching From": "Canberra", "Target City": "Sydney", "Intent": "Candidate", "Volume": 320, "Role Keyword": NaN}, {"Category": "Dentist", "Related Query": "dentist jobs melbourne", "Searching From": "Melbourne", "Target City": "Melbourne", "Intent": "Candidate", "Volume": 260, "Role Keyword": NaN}, {"Category": "Dentist", "Related Query": "dentist jobs melbourne australia", "Searching From": "Newcastle", "Target City": "Melbourne", "Intent": "Candidate", "Volume": 260, "Role Keyword": NaN}, {"Category": "Dentist", "Related Query": "dentist jobs brisbane", "Searching From": "Hobart", "Target City": "Brisbane", "Intent": "Candidate", "Volume": 210, "Role Keyword": NaN}, {"Category": "Dentist", "Related Query": "dentist brisbane jobs", "Searching From": "Gold Coast", "Target City": "Brisbane", "Intent": "Candidate", "Volume": 170, "Role Keyword": NaN}, {"Category": "Dentist", "Related Query": "dentist jobs perth", "Searching From": "Gold Coast", "Target City": "Perth", "Intent": "Candidate", "Volume": 170, "Role Keyword": NaN}, {"Category": "Dentist", "Related Query": "dentist jobs adelaide", "Searching From": "Brisbane", "Target City": "Adelaide", "Intent": "Candidate", "Volume": 140, "Role Keyword": NaN}, {"Category": "Dentist", "Related Query": "dentist adelaide jobs", "Searching From": "Brisbane", "Target City": "Adelaide", "Intent": "Candidate", "Volume": 140, "Role Keyword": NaN}, {"Category": "Dentist", "Related Query": "dentist jobs perth wa", "Searching From": "Adelaide", "Target City": "Perth", "Intent": "Candidate", "Volume": 140, "Role Keyword": NaN}, {"Category": "Dentist", "Related Query": "dentist jobs in sydney australia", "Searching From": "Gold Coast", "Target City": "Sydney", "Intent": "Candidate", "Volume": 110, "Role Keyword": NaN}, {"Category": "Dentist", "Related Query": "general dentist job near me", "Searching From": "Sydney", "Target City": "Sydney", "Intent": "Candidate", "Volume": 10, "Role Keyword": "general dentist"}, {"Category": "Dentist", "Related Query": "general dentist jobs near me", "Searching From": "Sydney", "Target City": "Sydney", "Intent": "Candidate", "Volume": 10, "Role Keyword": "general dentist"}, {"Category": "General Practitioner (GP)", "Related Query": "gp jobs melbourne", "Searching From": "Sydney", "Target City": "Melbourne", "Intent": "Candidate", "Volume": 320, "Role Keyword": NaN}, {"Category": "General Practitioner (GP)", "Related Query": "gp jobs melbourne australia", "Searching From": "Sydney", "Target City": "Melbourne", "Intent": "Candidate", "Volume": 320, "Role Keyword": NaN}, {"Category": "General Practitioner (GP)", "Related Query": "gp jobs sydney", "Searching From": "Canberra", "Target City": "Sydney", "Intent": "Candidate", "Volume": 260, "Role Keyword": NaN}, {"Category": "General Practitioner (GP)", "Related Query": "gp jobs brisbane", "Searching From": "Melbourne", "Target City": "Brisbane", "Intent": "Candidate", "Volume": 210, "Role Keyword": NaN}, {"Category": "General Practitioner (GP)", "Related Query": "gp jobs perth", "Searching From": "Perth", "Target City": "Perth", "Intent": "Candidate", "Volume": 170, "Role Keyword": NaN}, {"Category": "General Practitioner (GP)", "Related Query": "gp jobs sydney australia", "Searching From": "Newcastle", "Target City": "Sydney", "Intent": "Candidate", "Volume": 140, "Role Keyword": NaN}, {"Category": "General Practitioner (GP)", "Related Query": "gp jobs adelaide", "Searching From": "Perth", "Target City": "Adelaide", "Intent": "Candidate", "Volume": 110, "Role Keyword": NaN}, {"Category": "General Practitioner (GP)", "Related Query": "telehealth gp in melbourne", "Searching From": "N/A", "Target City": "Melbourne", "Intent": "Candidate", "Volume": 110, "Role Keyword": NaN}, {"Category": "General Practitioner (GP)", "Related Query": "gp jobs canberra", "Searching From": "Adelaide", "Target City": "Canberra", "Intent": "Candidate", "Volume": 90, "Role Keyword": NaN}, {"Category": "General Practitioner (GP)", "Related Query": "gp jobs perth wa", "Searching From": "Melbourne", "Target City": "Perth", "Intent": "Candidate", "Volume": 90, "Role Keyword": NaN}, {"Category": "General Practitioner (GP)", "Related Query": "gp jobs gold coast", "Searching From": "Newcastle", "Target City": "Gold Coast", "Intent": "Candidate", "Volume": 90, "Role Keyword": NaN}, {"Category": "General Practitioner (GP)", "Related Query": "brisbane gp and telehealth clinic", "Searching From": "N/A", "Target City": "Brisbane", "Intent": "Candidate", "Volume": 70, "Role Keyword": NaN}, {"Category": "General Practitioner (GP)", "Related Query": "telehealth gp perth", "Searching From": "N/A", "Target City": "Perth", "Intent": "Candidate", "Volume": 70, "Role Keyword": NaN}, {"Category": "General Practitioner (GP)", "Related Query": "telehealth gp services in melbourne", "Searching From": "N/A", "Target City": "Melbourne", "Intent": "Candidate", "Volume": 70, "Role Keyword": NaN}, {"Category": "General Practitioner (GP)", "Related Query": "locum gp jobs brisbane", "Searching From": "Sydney", "Target City": "Brisbane", "Intent": "Candidate", "Volume": 30, "Role Keyword": "locum gp"}, {"Category": "General Practitioner (GP)", "Related Query": "locum gp jobs sydney", "Searching From": "Sydney", "Target City": "Sydney", "Intent": "Candidate", "Volume": 30, "Role Keyword": "locum gp"}, {"Category": "General Practitioner (GP)", "Related Query": "gp recruitment melbourne", "Searching From": "Sydney", "Target City": "Melbourne", "Intent": "Client", "Volume": 20, "Role Keyword": NaN}, {"Category": "General Practitioner (GP)", "Related Query": "gp recruitment queensland", "Searching From": "Sydney", "Target City": "Queensland", "Intent": "Client", "Volume": 20, "Role Keyword": NaN}, {"Category": "General Practitioner (GP)", "Related Query": "locum gp jobs in victoria", "Searching From": "Sydney", "Target City": "Victoria", "Intent": "Candidate", "Volume": 20, "Role Keyword": "locum gp"}, {"Category": "General Practitioner (GP)", "Related Query": "locum gp jobs in new south wales", "Searching From": "Sydney", "Target City": "New South Wales", "Intent": "Candidate", "Volume": 20, "Role Keyword": "locum gp"}, {"Category": "General Practitioner (GP)", "Related Query": "locum gp jobs in western australia", "Searching From": "Canberra", "Target City": "Western Australia", "Intent": "Candidate", "Volume": 20, "Role Keyword": "locum gp"}, {"Category": "General Practitioner (GP)", "Related Query": "non vr gp jobs melbourne", "Searching From": "Sydney", "Target City": "Melbourne", "Intent": "Candidate", "Volume": 20, "Role Keyword": "vr gp"}, {"Category": "General Practitioner (GP)", "Related Query": "non vr gp jobs perth", "Searching From": "Sydney", "Target City": "Perth", "Intent": "Candidate", "Volume": 20, "Role Keyword": "vr gp"}, {"Category": "General Practitioner (GP)", "Related Query": "non vr gp jobs victoria", "Searching From": "Sydney", "Target City": "Victoria", "Intent": "Candidate", "Volume": 20, "Role Keyword": "vr gp"}, {"Category": "General Practitioner (GP)", "Related Query": "vr gp jobs brisbane", "Searching From": "Sydney", "Target City": "Brisbane", "Intent": "Candidate", "Volume": 20, "Role Keyword": "vr gp"}, {"Category": "General Practitioner (GP)", "Related Query": "vr gp jobs melbourne", "Searching From": "Sydney", "Target City": "Melbourne", "Intent": "Candidate", "Volume": 20, "Role Keyword": "vr gp"}, {"Category": "General Practitioner (GP)", "Related Query": "gp recruitment gold coast", "Searching From": "Melbourne", "Target City": "Gold Coast", "Intent": "Client", "Volume": 10, "Role Keyword": NaN}, {"Category": "Occupational Therapist", "Related Query": "occupational therapist jobs in adelaide sa", "Searching From": "Canberra", "Target City": "Adelaide", "Intent": "Candidate", "Volume": 170, "Role Keyword": NaN}, {"Category": "Occupational Therapist", "Related Query": "occupational therapist jobs perth wa", "Searching From": "Canberra", "Target City": "Perth", "Intent": "Candidate", "Volume": 140, "Role Keyword": NaN}, {"Category": "Occupational Therapist", "Related Query": "occupational therapist jobs adelaide", "Searching From": "Canberra", "Target City": "Adelaide", "Intent": "Candidate", "Volume": 90, "Role Keyword": NaN}, {"Category": "Occupational Therapist", "Related Query": "occupational therapist jobs melbourne", "Searching From": "Hobart", "Target City": "Melbourne", "Intent": "Candidate", "Volume": 70, "Role Keyword": NaN}, {"Category": "Occupational Therapist", "Related Query": "occupational therapist jobs perth", "Searching From": "Hobart", "Target City": "Perth", "Intent": "Candidate", "Volume": 70, "Role Keyword": NaN}, {"Category": "Occupational Therapist", "Related Query": "occupational therapist sunshine coast jobs", "Searching From": "Newcastle", "Target City": "Sunshine Coast", "Intent": "Candidate", "Volume": 50, "Role Keyword": NaN}, {"Category": "Occupational Therapist", "Related Query": "occupational therapist jobs brisbane", "Searching From": "Perth", "Target City": "Brisbane", "Intent": "Candidate", "Volume": 40, "Role Keyword": NaN}, {"Category": "Occupational Therapist", "Related Query": "occupational therapist job perth", "Searching From": "Brisbane", "Target City": "Perth", "Intent": "Candidate", "Volume": 20, "Role Keyword": NaN}, {"Category": "Occupational Therapist", "Related Query": "occupational therapist jobs near me", "Searching From": "Perth", "Target City": "Perth", "Intent": "Candidate", "Volume": 20, "Role Keyword": NaN}, {"Category": "Occupational Therapist", "Related Query": "occupational therapist sydney nsw jobs", "Searching From": "Geelong", "Target City": "Sydney", "Intent": "Candidate", "Volume": 10, "Role Keyword": NaN}, {"Category": "Physiotherapist", "Related Query": "physiotherapist perth jobs", "Searching From": "Hobart", "Target City": "Perth", "Intent": "Candidate", "Volume": 320, "Role Keyword": NaN}, {"Category": "Physiotherapist", "Related Query": "physiotherapist jobs melbourne", "Searching From": "Brisbane", "Target City": "Melbourne", "Intent": "Candidate", "Volume": 90, "Role Keyword": NaN}, {"Category": "Physiotherapist", "Related Query": "physiotherapist jobs perth", "Searching From": "Brisbane", "Target City": "Perth", "Intent": "Candidate", "Volume": 90, "Role Keyword": NaN}, {"Category": "Physiotherapist", "Related Query": "physiotherapist jobs sydney", "Searching From": "Brisbane", "Target City": "Sydney", "Intent": "Candidate", "Volume": 90, "Role Keyword": NaN}, {"Category": "Physiotherapist", "Related Query": "physiotherapist jobs adelaide", "Searching From": "Brisbane", "Target City": "Adelaide", "Intent": "Candidate", "Volume": 90, "Role Keyword": NaN}, {"Category": "Physiotherapist", "Related Query": "physiotherapist jobs western australia", "Searching From": "Sydney", "Target City": "Western Australia", "Intent": "Candidate", "Volume": 70, "Role Keyword": NaN}, {"Category": "Physiotherapist", "Related Query": "physiotherapist jobs brisbane", "Searching From": "Brisbane", "Target City": "Brisbane", "Intent": "Candidate", "Volume": 40, "Role Keyword": NaN}, {"Category": "Physiotherapist", "Related Query": "physiotherapist jobs in melbourne", "Searching From": "Brisbane", "Target City": "Melbourne", "Intent": "Candidate", "Volume": 40, "Role Keyword": NaN}, {"Category": "Physiotherapist", "Related Query": "physiotherapist jobs near me", "Searching From": "Brisbane", "Target City": "Brisbane", "Intent": "Candidate", "Volume": 40, "Role Keyword": NaN}, {"Category": "Physiotherapist", "Related Query": "physiotherapist job sydney", "Searching From": "Adelaide", "Target City": "Sydney", "Intent": "Candidate", "Volume": 40, "Role Keyword": NaN}, {"Category": "Podiatrist", "Related Query": "podiatrist jobs melbourne", "Searching From": "Hobart", "Target City": "Melbourne", "Intent": "Candidate", "Volume": 40, "Role Keyword": NaN}, {"Category": "Podiatrist", "Related Query": "podiatrist jobs sydney", "Searching From": "Hobart", "Target City": "Sydney", "Intent": "Candidate", "Volume": 40, "Role Keyword": NaN}, {"Category": "Podiatrist", "Related Query": "podiatrist jobs perth", "Searching From": "Geelong", "Target City": "Perth", "Intent": "Candidate", "Volume": 30, "Role Keyword": NaN}, {"Category": "Podiatrist", "Related Query": "podiatrist jobs in perth wa", "Searching From": "Hobart", "Target City": "Perth", "Intent": "Candidate", "Volume": 30, "Role Keyword": NaN}, {"Category": "Podiatrist", "Related Query": "podiatrist job near me", "Searching From": "Sydney", "Target City": "Sydney", "Intent": "Candidate", "Volume": 20, "Role Keyword": NaN}, {"Category": "Podiatrist", "Related Query": "podiatrist jobs near me", "Searching From": "Geelong", "Target City": "Geelong", "Intent": "Candidate", "Volume": 10, "Role Keyword": NaN}, {"Category": "Podiatrist", "Related Query": "podiatrist jobs brisbane", "Searching From": "Hobart", "Target City": "Brisbane", "Intent": "Candidate", "Volume": 10, "Role Keyword": NaN}, {"Category": "Psychiatrist", "Related Query": "jobs psychiatrist melbourne", "Searching From": "Gold Coast", "Target City": "Melbourne", "Intent": "Candidate", "Volume": 50, "Role Keyword": NaN}, {"Category": "Psychiatrist", "Related Query": "psychiatrist jobs sydney", "Searching From": "Melbourne", "Target City": "Sydney", "Intent": "Candidate", "Volume": 30, "Role Keyword": NaN}, {"Category": "Psychiatrist", "Related Query": "psychiatrist jobs near me", "Searching From": "Perth", "Target City": "Perth", "Intent": "Candidate", "Volume": 20, "Role Keyword": NaN}, {"Category": "Psychiatrist", "Related Query": "psychiatrist jobs perth", "Searching From": "Perth", "Target City": "Perth", "Intent": "Candidate", "Volume": 20, "Role Keyword": NaN}, {"Category": "Psychiatrist", "Related Query": "sydney psychiatrist jobs", "Searching From": "Perth", "Target City": "Sydney", "Intent": "Candidate", "Volume": 20, "Role Keyword": NaN}, {"Category": "Psychiatrist", "Related Query": "psychiatrist jobs brisbane", "Searching From": "Brisbane", "Target City": "Brisbane", "Intent": "Candidate", "Volume": 20, "Role Keyword": NaN}, {"Category": "Psychiatrist", "Related Query": "psychiatrist jobs melbourne", "Searching From": "Hobart", "Target City": "Melbourne", "Intent": "Candidate", "Volume": 10, "Role Keyword": NaN}, {"Category": "Psychologist", "Related Query": "psychologist jobs melbourne", "Searching From": "Brisbane", "Target City": "Melbourne", "Intent": "Candidate", "Volume": 320, "Role Keyword": NaN}, {"Category": "Psychologist", "Related Query": "psychologist job melbourne", "Searching From": "Brisbane", "Target City": "Melbourne", "Intent": "Candidate", "Volume": 170, "Role Keyword": NaN}, {"Category": "Psychologist", "Related Query": "psychologist job sydney", "Searching From": "Brisbane", "Target City": "Sydney", "Intent": "Candidate", "Volume": 170, "Role Keyword": NaN}, {"Category": "Psychologist", "Related Query": "provisional psychologist jobs melbourne", "Searching From": "Gold Coast", "Target City": "Melbourne", "Intent": "Candidate", "Volume": 110, "Role Keyword": NaN}, {"Category": "Psychologist", "Related Query": "psychologist jobs brisbane", "Searching From": "Hobart", "Target City": "Brisbane", "Intent": "Candidate", "Volume": 90, "Role Keyword": NaN}, {"Category": "Psychologist", "Related Query": "psychologist jobs perth", "Searching From": "Hobart", "Target City": "Perth", "Intent": "Candidate", "Volume": 90, "Role Keyword": NaN}, {"Category": "Psychologist", "Related Query": "psychologist jobs adelaide", "Searching From": "Sydney", "Target City": "Adelaide", "Intent": "Candidate", "Volume": 90, "Role Keyword": NaN}, {"Category": "Psychologist", "Related Query": "psychologist jobs sunshine coast", "Searching From": "Sydney", "Target City": "Sunshine Coast", "Intent": "Candidate", "Volume": 70, "Role Keyword": NaN}, {"Category": "Psychologist", "Related Query": "psychologist jobs in melbourne", "Searching From": "Perth", "Target City": "Melbourne", "Intent": "Candidate", "Volume": 70, "Role Keyword": NaN}, {"Category": "Psychologist", "Related Query": "psychologist jobs geelong", "Searching From": "Brisbane", "Target City": "Geelong", "Intent": "Candidate", "Volume": 50, "Role Keyword": NaN}, {"Category": "Psychologist", "Related Query": "clinical psychologist jobs melbourne", "Searching From": "Sydney", "Target City": "Melbourne", "Intent": "Candidate", "Volume": 40, "Role Keyword": "clinical psychologist"}, {"Category": "Psychologist", "Related Query": "clinical psychologist jobs near me", "Searching From": "Canberra", "Target City": "Canberra", "Intent": "Candidate", "Volume": 20, "Role Keyword": "clinical psychologist"}, {"Category": "Psychologist", "Related Query": "newcastle psychologist recruitment", "Searching From": "Sydney", "Target City": "Newcastle", "Intent": "Client", "Volume": 10, "Role Keyword": NaN}, {"Category": "Psychologist", "Related Query": "clinical psychologist jobs perth", "Searching From": "Melbourne", "Target City": "Perth", "Intent": "Candidate", "Volume": 10, "Role Keyword": "clinical psychologist"}, {"Category": "Psychologist", "Related Query": "clinical psychologist job near me", "Searching From": "Melbourne", "Target City": "Melbourne", "Intent": "Candidate", "Volume": 10, "Role Keyword": "clinical psychologist"}, {"Category": "Speech Pathologist", "Related Query": "speech pathologist jobs melbourne", "Searching From": "Melbourne", "Target City": "Melbourne", "Intent": "Candidate", "Volume": 70, "Role Keyword": NaN}, {"Category": "Speech Pathologist", "Related Query": "speech pathologist jobs perth", "Searching From": "Sydney", "Target City": "Perth", "Intent": "Candidate", "Volume": 40, "Role Keyword": NaN}, {"Category": "Speech Pathologist", "Related Query": "speech pathologist jobs sydney", "Searching From": "Sydney", "Target City": "Sydney", "Intent": "Candidate", "Volume": 40, "Role Keyword": NaN}, {"Category": "Speech Pathologist", "Related Query": "speech pathologist jobs brisbane", "Searching From": "Sydney", "Target City": "Brisbane", "Intent": "Candidate", "Volume": 20, "Role Keyword": NaN}, {"Category": "Speech Pathologist", "Related Query": "speech pathologist jobs perth wa", "Searching From": "Sydney", "Target City": "Perth", "Intent": "Candidate", "Volume": 20, "Role Keyword": NaN}, {"Category": "Speech Pathologist", "Related Query": "speech pathologist jobs adelaide", "Searching From": "Hobart", "Target City": "Adelaide", "Intent": "Candidate", "Volume": 10, "Role Keyword": NaN}, {"Category": "Speech Pathologist", "Related Query": "speech pathologist jobs near me", "Searching From": "Hobart", "Target City": "Hobart", "Intent": "Candidate", "Volume": 10, "Role Keyword": NaN}, {"Category": "Speech Pathologist", "Related Query": "speech pathologist jobs sydney nsw", "Searching From": "Hobart", "Target City": "Sydney", "Intent": "Candidate", "Volume": 10, "Role Keyword": NaN}, {"Category": "Speech Pathologist", "Related Query": "speech pathologist melbourne vic jobs", "Searching From": "Geelong", "Target City": "Melbourne", "Intent": "Candidate", "Volume": 10, "Role Keyword": NaN}, {"Category": "Speech Pathologist", "Related Query": "speech pathologist sydney nsw jobs", "Searching From": "Geelong", "Target City": "Sydney", "Intent": "Candidate", "Volume": 10, "Role Keyword": NaN}, {"Category": "Speech Pathologist", "Related Query": "speech language pathologist jobs near me", "Searching From": "Sydney", "Target City": "Sydney", "Intent": "Candidate", "Volume": 10, "Role Keyword": "speech language pathologist"}];
+const maxVol=Math.max(...allData.map(d=>d.Volume||0));
+let cf='all',intentF='all',ff='all',tf='all';
+
+const cats=[...new Set(allData.map(d=>d.Category))].sort();
+const froms=[...new Set(allData.map(d=>d['Searching From']).filter(f=>f!=='N/A'))].sort();
+const targets=[...new Set(allData.map(d=>d['Target City']))].sort();
+
+cats.forEach(c=>{
+  const btn=document.createElement('button');
+  btn.className='fb';
+  btn.textContent=c;
+  btn.onclick=()=>sf('cat',c,btn);
+  document.getElementById('catBtns').appendChild(btn);
+});
+froms.forEach(c=>{
+  const btn=document.createElement('button');
+  btn.className='fb';
+  btn.textContent=c;
+  btn.onclick=()=>sf('from',c,btn);
+  document.getElementById('fromBtns').appendChild(btn);
+});
+targets.forEach(c=>{
+  const btn=document.createElement('button');
+  btn.className='fb';
+  btn.textContent=c;
+  btn.onclick=()=>sf('target',c,btn);
+  document.getElementById('targetBtns').appendChild(btn);
+});
+
+function setIntent(val,btn){
+  intentF=val;
+  document.querySelectorAll('.intent-btn').forEach(b=>b.classList.remove('all-active','candidate-active','client-active','patient-active'));
+  if(val==='all')btn.classList.add('all-active');
+  else if(val==='Candidate')btn.classList.add('candidate-active');
+  else if(val==='Client')btn.classList.add('client-active');
+  else btn.classList.add('patient-active');
+  render();
+}
+
+function sf(type,val,btn){
+  if(type==='cat'){cf=val;document.querySelectorAll('#catBtns .fb').forEach(b=>b.classList.remove('active'));}
+  else if(type==='from'){ff=val;document.querySelectorAll('#fromBtns .fb').forEach(b=>b.classList.remove('active'));}
+  else{tf=val;document.querySelectorAll('#targetBtns .fb').forEach(b=>b.classList.remove('active'));}
+  btn.classList.add('active');
+  render();
+}
+
+function render(){
+  const q=(document.getElementById('searchBox').value||'').toLowerCase();
+  const f=allData.filter(r=>
+    (cf==='all'||r.Category===cf)&&
+    (intentF==='all'||r.Intent===intentF)&&
+    (ff==='all'||r['Searching From']===ff)&&
+    (tf==='all'||r['Target City']===tf)&&
+    (!q||r['Related Query'].includes(q)||r.Category.toLowerCase().includes(q))
+  );
+
+  // Sort filtered by volume descending within category
+  f.sort((a,b)=>{
+    if(a.Category < b.Category) return -1;
+    if(a.Category > b.Category) return 1;
+    return b.Volume - a.Volume;
+  });
+
+  const usedCities=[...new Set(f.map(r=>r['Searching From']).filter(c=>c!=='N/A'))];
+  document.getElementById('legend').innerHTML=usedCities.map(c=>`
+    <span class="li"><span class="ld" style="background:${cityColors[c]||'#ddd'}"></span>${c}</span>
+  `).join('');
+
+  document.getElementById('cnt').textContent=`Showing ${f.length} of ${allData.length} keywords`;
+
+  let html='',lastCat='',rank=0;
+  f.forEach(r=>{
+    const bg=cityColors[r['Searching From']]||'#eee';
+    const pct=Math.round((r.Volume/maxVol)*100);
+    const isNA=r['Searching From']==='N/A';
+    const intentClass=r.Intent==='Candidate'?'bc':'bk';
+    const barColor=r.Intent==='Candidate'?'#B5D4F4':'#FAC775';
+
+    if(r.Category!==lastCat){
+      lastCat=r.Category;
+      rank=0;
+      html+=`<tr class="grp"><td colspan="6">${r.Category}</td></tr>`;
+    }
+    rank++;
+
+    const fromCell=isNA
+      ?`<span class="na-watermark">Location unidentified</span>`
+      :`<span class="city-pill" style="background:${bg}33"><span class="city-dot" style="background:${bg}"></span>${r['Searching From']}</span>`;
+
+    html+=`<tr class="data" style="border-left:3px solid ${isNA?'#ddd':bg}">
+      <td><span class="rank">${rank}</span></td>
+      <td>${r['Related Query']}</td>
+      <td>${fromCell}</td>
+      <td style="color:#666;font-size:12px">${r['Target City']}</td>
+      <td><span class="b ${intentClass}">${r.Intent}</span></td>
+      <td><span style="font-weight:500">${r.Volume.toLocaleString()}</span><div class="vol-bar" style="width:${pct}%;background:${barColor}"></div></td>
+    </tr>`;
+  });
+  document.getElementById('tb').innerHTML=html||'<tr><td colspan="6" class="no-results">No results found</td></tr>';
+}
+
+render();
+</script>
+</body>
+</html>
